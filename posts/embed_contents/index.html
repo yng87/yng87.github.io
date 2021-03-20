@@ -13,7 +13,8 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Hugo に外部コンテンツを良い感じで埋め込む"/>
 <meta name="twitter:description" content="Shortcode を利用する方法  Hugo の shortcodeを利用する方法。"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/normalize.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/main.css" />
@@ -25,6 +26,8 @@
 	<script src="https://keisukeyanagi.netlify.app/js/abc.js"></script>
 	<script src="https://keisukeyanagi.netlify.app/js/xyz.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	
 </head>
 
 <body>
@@ -68,42 +71,32 @@
 
 		<div class="markdown">
 			<h1 id="shortcode-を利用する方法">Shortcode を利用する方法</h1>
-
 <hr>
-
 <p>Hugo の <a href="https://gohugo.io/content-management/shortcodes/">shortcode</a>を利用する方法。</p>
-
 <h2 id="youtube">Youtube</h2>
-
+<p>{{&lt; youtube 2xkNJL4gJ9E &gt;}}
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/2xkNJL4gJ9E" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
-
-
+</p>
 <h2 id="twitter">Twitter</h2>
-
+<p>{{&lt; twitter 1370289859995131905 &gt;}}
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">行列分解の手法についてきちんと勉強したい</p>&mdash; やなぎ (@yana_phys) <a href="https://twitter.com/yana_phys/status/1370289859995131905?ref_src=twsrc%5Etfw">March 12, 2021</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
+</p>
 <h1 id="ブログカードを利用する方法">ブログカードを利用する方法</h1>
-
 <hr>
-
 <p>markdown 内に直接 html を書く。以下ははてなブログで使われているブログカードを利用する例。参考にしたサイトで例を作らせてもらった。</p>
-
 <iframe class="hatenablogcard" style="width:100%;height:155px;margin:15px 0;max-width:680px;" title="[Hugo]ブログカードを簡単に作成したい – Inomaso Blog" src="https://hatenablog-parts.com/embed?url=https://www.inomaso.com/post/2020/08/hugo-blogcard-generate/" frameborder="0" scrolling="no"></iframe>
-
 <p>なお Hugo のバージョンが0.60以上だと、記事内の html は無視されてしまうらしい。回避するために、<code>config.toml</code> に以下のように追記する。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#000">markup</span>]
   [<span style="color:#000">markup</span>.<span style="color:#000">goldmark</span>]
     [<span style="color:#000">markup</span>.<span style="color:#000">goldmark</span>.<span style="color:#000">renderer</span>]
-      <span style="color:#000">unsafe</span> = <span style="color:#a90d91">true</span></code></pre></div>
-<p>unsafe と書いてあるので後々問題が生じる可能性はある。
-以下を参考にした。
-<iframe class="hatenablogcard" style="width:100%;height:155px;margin:15px 0;max-width:680px;" title="Hugo v0.60以上を使うと、Markdown中のHTMLタグが「raw HTML omitted」となって消えてしまう - My External Storage" src="https://hatenablog-parts.com/embed?url=https://budougumi0617.github.io/2020/03/10/hugo-render-raw-html/" frameborder="0" scrolling="no"></iframe></p>
-
+      <span style="color:#000">unsafe</span> = <span style="color:#a90d91">true</span>
+</code></pre></div><p>unsafe と書いてあるので後々問題が生じる可能性はある。
+以下を参考にした。</p>
+<iframe class="hatenablogcard" style="width:100%;height:155px;margin:15px 0;max-width:680px;" title="Hugo v0.60以上を使うと、Markdown中のHTMLタグが「raw HTML omitted」となって消えてしまう - My External Storage" src="https://hatenablog-parts.com/embed?url=https://budougumi0617.github.io/2020/03/10/hugo-render-raw-html/" frameborder="0" scrolling="no"></iframe>
 <p>この方法だとはてなブログ側の仕様が変わった際に修正するのが大変そうなので、多用しない方が良いかもしれない。</p>
 
 		</div>
@@ -143,6 +136,4 @@ if (!doNotTrack) {
 
 <script>feather.replace()</script>
 </body>
-
-
 </html>

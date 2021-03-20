@@ -9,13 +9,12 @@
     <copyright>© Copyright notice</copyright>
     <lastBuildDate>Sat, 20 Mar 2021 10:41:06 +0900</lastBuildDate><atom:link href="https://keisukeyanagi.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>KaTeX</title>
+      <title>Hugo &#43; Math equation</title>
       <link>https://keisukeyanagi.netlify.app/posts/katex/</link>
       <pubDate>Sat, 20 Mar 2021 10:41:06 +0900</pubDate>
       
       <guid>https://keisukeyanagi.netlify.app/posts/katex/</guid>
-      <description>Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
-アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.</description>
+      <description>アンダースコアがhtmlタグに変わる  Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。</description>
     </item>
     
     <item>

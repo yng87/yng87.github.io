@@ -2,20 +2,19 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>KaTeX - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta property="og:title" content="KaTeX" />
-<meta property="og:description" content="Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
-アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}." />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Hugo &#43; Math equation - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Hugo &#43; Math equation" />
+<meta property="og:description" content="アンダースコアがhtmlタグに変わる  Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://keisukeyanagi.netlify.app/posts/katex/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-03-20T10:41:06&#43;09:00" />
 <meta property="article:modified_time" content="2021-03-20T10:41:06&#43;09:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="KaTeX"/>
-<meta name="twitter:description" content="Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
-アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}."/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<meta name="twitter:title" content="Hugo &#43; Math equation"/>
+<meta name="twitter:description" content="アンダースコアがhtmlタグに変わる  Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。"/>
+
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/normalize.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/main.css" />
@@ -27,6 +26,31 @@
 	<script src="https://keisukeyanagi.netlify.app/js/abc.js"></script>
 	<script src="https://keisukeyanagi.netlify.app/js/xyz.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	
+	<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  
+    window.addEventListener('load', (event) => {
+        document.querySelectorAll("mjx-container").forEach(function(x){
+          x.parentElement.classList += 'has-jax'})
+      });
+  
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	
 </head>
 
 <body>
@@ -64,32 +88,29 @@
 
 
 		<div class="post-header">
-			<h1 class="title">KaTeX</h1>
+			<h1 class="title">Hugo &#43; Math equation</h1>
 			<div class="meta">Posted at &mdash; Mar 20, 2021</div>
 		</div>
 
 		<div class="markdown">
-			<p>Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。</p>
-
-<h2 id="アンダースコアがhtmlタグに変わる">アンダースコアがhtmlタグに変わる</h2>
-
+			<h2 id="アンダースコアがhtmlタグに変わる">アンダースコアがhtmlタグに変わる</h2>
 <hr>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$</code></pre></div>
-<p>↓</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$$p(class = j) = \frac{\exp(a_{j})}{\sum&lt;<span style="color:#000">em</span>&gt;j \exp(a&lt;/<span style="color:#000">em</span>&gt;{j})}.$$</code></pre></div>
-<p>KaTeX が上手くいかない時がある。</p>
-
-<p>インライン (j)</p>
-
-<p><span  class="math">\[p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.\]</span></p>
-
-<p><span  class="math">\[p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}\]</span></p>
-
-<hr>
-
-<p><span  class="math">\[
+<p>Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。</p>
+<p>MathJax や KaTexなどを使うと Hugo のコンテンツで数式を扱うことができる。しかし Hugo の markup は Markdown のアンダースコアで囲われた部分をイタリック体にするので、数式内に二つアンダースコア<code>_</code> があると、<code>&lt;em&gt;...&lt;/em&gt;</code> が挿入されてしまう。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$
+</code></pre></div><p>↓</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$$p(class = j) = \frac{\exp(a_{j})}{\sum&lt;<span style="color:#000">em</span>&gt;j \exp(a&lt;/<span style="color:#000">em</span>&gt;{j})}.$$
+</code></pre></div><p>いろいろな wrokaround がありそうだが、以下のページを真似するのが簡単だった。数式のレンダリングには MathJax 3 を使う。</p>
+<p><a href="https://hatenablog-parts.com/embed?url=https://geoffruddock.com/math-typesetting-in-hugo/">Render LaTeX math expressions in Hugo with MathJax 3 · Geoff Ruddock</a></p>
+<p>必要なページでのみ MathJax が動くように、<code>header.html</code> では以下のように MathJax を挿入した</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">	{{ if and (isset .Params &#34;math&#34;) (eq .Params.math true)}}
+	{{ partial &#34;mathjax_support.html&#34; . }}
+	{{ end }}
+</code></pre></div><p>これで <code>math: ture</code> と設定したコンテンツでのみ数式がレンダリングされる。
+上手くいけば先ほどの数式は以下のようになる。
+$$
 p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}
-\]</span></p>
+$$</p>
 
 		</div>
 
@@ -120,22 +141,4 @@ if (!doNotTrack) {
 
 <script>feather.replace()</script>
 </body>
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.css" integrity="sha384-t5CR+zwDAROtph0PXGte6ia8heboACF9R5l/DiY+WZ3P2lxNgvJkQk5n7GPvLMYw" crossorigin="anonymous">
-
-
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.js" integrity="sha384-FaFLTlohFghEIZkw6VGwmf9ISTubWAVYW8tG8+w2LAIftJEULZABrF9PPFv+tVkH" crossorigin="anonymous"></script>
-
-
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/auto-render.min.js" integrity="sha384-bHBqxz8fokvgoJ/sc17HODNxa42TlaEhB+w8ZJXTc2nZf1VgEaFZeZvT4Mznfz0v" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    renderMathInElement(document.body, {delimiters: [
-      {left: "$$", right: "$$", display: true},
-      {left: "$", right: "$", display: false}]
-    });
-  });
-</script>
-
 </html>
