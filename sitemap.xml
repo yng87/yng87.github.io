@@ -2,16 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://keisukeyanagi.netlify.app/posts/katex/</loc>
+    <lastmod>2021-03-20T10:41:06+09:00</lastmod>
+  </url><url>
+    <loc>https://keisukeyanagi.netlify.app/</loc>
+    <lastmod>2021-03-20T10:41:06+09:00</lastmod>
+  </url><url>
+    <loc>https://keisukeyanagi.netlify.app/posts/</loc>
+    <lastmod>2021-03-20T10:41:06+09:00</lastmod>
+  </url><url>
     <loc>https://keisukeyanagi.netlify.app/tags/hugo/</loc>
     <lastmod>2021-03-20T08:12:54+09:00</lastmod>
   </url><url>
     <loc>https://keisukeyanagi.netlify.app/posts/embed_contents/</loc>
-    <lastmod>2021-03-20T08:12:54+09:00</lastmod>
-  </url><url>
-    <loc>https://keisukeyanagi.netlify.app/</loc>
-    <lastmod>2021-03-20T08:12:54+09:00</lastmod>
-  </url><url>
-    <loc>https://keisukeyanagi.netlify.app/posts/</loc>
     <lastmod>2021-03-20T08:12:54+09:00</lastmod>
   </url><url>
     <loc>https://keisukeyanagi.netlify.app/tags/</loc>

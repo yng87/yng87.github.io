@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Sat, 20 Mar 2021 08:12:54 +0900</lastBuildDate><atom:link href="https://keisukeyanagi.netlify.app/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 10:41:06 +0900</lastBuildDate><atom:link href="https://keisukeyanagi.netlify.app/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>KaTeX</title>
+      <link>https://keisukeyanagi.netlify.app/posts/katex/</link>
+      <pubDate>Sat, 20 Mar 2021 10:41:06 +0900</pubDate>
+      
+      <guid>https://keisukeyanagi.netlify.app/posts/katex/</guid>
+      <description>KaTeX が上手くいかない時がある。
+インライン (j)
+$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.</description>
+    </item>
+    
     <item>
       <title>Hugo に外部コンテンツを良い感じで埋め込む</title>
       <link>https://keisukeyanagi.netlify.app/posts/embed_contents/</link>
