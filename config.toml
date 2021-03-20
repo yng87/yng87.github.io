@@ -1,4 +1,5 @@
-baseURL = "https://keisukeyanagi.netlify.app/"
+# baseURL = "https://keisukeyanagi.netlify.app/"
+baseURL = "https://yng87.github.io/
 languageCode = "ja-jp"
 title = "Keisuke Yanagi"
 theme = "ezhil"
