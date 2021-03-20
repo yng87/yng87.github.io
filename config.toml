@@ -1,5 +1,5 @@
 baseURL = "https://keisukeyanagi.netlify.app/"
-languageCode = "en-us"
+languageCode = "ja-jp"
 title = "Keisuke Yanagi"
 theme = "ezhil"
 
@@ -19,7 +19,7 @@ googleAnalytics = "UA-123-45"
 paginate = 10
 
 # Number of characters to show in summary.
-summaryLength = 10
+summaryLength = 5
 
 [params]
     # Blog subtitle which appears below blog title. Supports markdown.
@@ -89,3 +89,9 @@ url = "https://twitter.com/yana_phys"
 # Enable tags.
 [taxonomies]
    tag = "tags"
+
+# はてなブログカード埋め込みのため
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
