@@ -184,7 +184,7 @@
 <span style="color:#000">ftr_imp</span>
 </code></pre></div><p>結果</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        ,  0.        , 70.48167229<span style="color:#000">])</span>
-</code></pre></div><p>次に、root node で使われている feature 2 について計算する。ここでペアを組むのは (leaf0, leaf2), (leaf1, leaf3) である。例えば、leaf0 と leaf2 は、faeture 3 に関する分岐は両方 No だが、root での feature 2 に関する分岐は異なる。</p>
+</code></pre></div><p>次に、root node で使われている feature 2 について計算する。ここでペアを組むのは (leaf0, leaf2), (leaf1, leaf3) である。例えば、leaf0 と leaf2 は、feature 3 に関する分岐は両方 No だが、root での feature 2 に関する分岐は異なる。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">feature_idx</span> <span style="color:#000">=</span> <span style="color:#1c01ce">2</span>
 
 <span style="color:#a90d91">for</span> <span style="color:#000">i1</span>, <span style="color:#000">i2</span> <span style="color:#000">in</span> [(<span style="color:#1c01ce">0</span>, <span style="color:#1c01ce">2</span>), (<span style="color:#1c01ce">1</span>, <span style="color:#1c01ce">3</span>)]:

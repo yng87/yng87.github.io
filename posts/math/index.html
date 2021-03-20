@@ -100,13 +100,13 @@
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$
 </code></pre></div><p>↓</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$$p(class = j) = \frac{\exp(a_{j})}{\sum&lt;<span style="color:#000">em</span>&gt;j \exp(a&lt;/<span style="color:#000">em</span>&gt;{j})}.$$
-</code></pre></div><p>いろいろな wrokaround がありそうだが、以下のページを真似するのが簡単だった。数式のレンダリングには MathJax 3 を使う。</p>
+</code></pre></div><p>いろいろな workaround がありそうだが、以下のページを真似するのが簡単だった。数式のレンダリングには MathJax 3 を使う。</p>
 <p><a href="https://hatenablog-parts.com/embed?url=https://geoffruddock.com/math-typesetting-in-hugo/">Render LaTeX math expressions in Hugo with MathJax 3 · Geoff Ruddock</a></p>
 <p>必要なページでのみ MathJax が動くように、<code>header.html</code> では以下のように MathJax を挿入した</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">	{{ if and (isset .Params &#34;math&#34;) (eq .Params.math true)}}
 	{{ partial &#34;mathjax_support.html&#34; . }}
 	{{ end }}
-</code></pre></div><p>これで <code>math: ture</code> と設定したコンテンツでのみ数式がレンダリングされる。</p>
+</code></pre></div><p>これで <code>math: true</code> と設定したコンテンツでのみ数式がレンダリングされる。</p>
 <p>数式とマークダウンを共存させるために、数式はコードブロックとして記述するようにしている。
 つまり、以下のような式を書くと</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">`$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$`
