@@ -3,6 +3,7 @@ title: "Hugo + Math equation"
 date: 2021-03-20T10:41:06+09:00
 draft: false
 math: true
+tags: ["hugo"]
 ---
 
 
