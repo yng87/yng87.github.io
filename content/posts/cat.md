@@ -138,7 +138,7 @@ ftr_imp
 array([ 0.        ,  0.        ,  0.        , 70.48167229])
 ```
 
-次に、root node で使われている feature 2 について計算する。ここでペアを組むのは (leaf0, leaf2), (leaf1, leaf3) である。例えば、leaf0 と leaf2 は、faeture 3 に関する分岐は両方 No だが、root での feature 2 に関する分岐は異なる。
+次に、root node で使われている feature 2 について計算する。ここでペアを組むのは (leaf0, leaf2), (leaf1, leaf3) である。例えば、leaf0 と leaf2 は、feature 3 に関する分岐は両方 No だが、root での feature 2 に関する分岐は異なる。
 
 ```python
 feature_idx = 2

@@ -21,7 +21,7 @@ $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$
 $$p(class = j) = \frac{\exp(a_{j})}{\sum<em>j \exp(a</em>{j})}.$$
 ```
 
-いろいろな wrokaround がありそうだが、以下のページを真似するのが簡単だった。数式のレンダリングには MathJax 3 を使う。
+いろいろな workaround がありそうだが、以下のページを真似するのが簡単だった。数式のレンダリングには MathJax 3 を使う。
 
 [Render LaTeX math expressions in Hugo with MathJax 3 · Geoff Ruddock](https://hatenablog-parts.com/embed?url=https://geoffruddock.com/math-typesetting-in-hugo/)
 
@@ -32,7 +32,7 @@ $$p(class = j) = \frac{\exp(a_{j})}{\sum<em>j \exp(a</em>{j})}.$$
 	{{ end }}
 ```
 
-これで `math: ture` と設定したコンテンツでのみ数式がレンダリングされる。
+これで `math: true` と設定したコンテンツでのみ数式がレンダリングされる。
 
 数式とマークダウンを共存させるために、数式はコードブロックとして記述するようにしている。
 つまり、以下のような式を書くと
