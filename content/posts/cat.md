@@ -4,7 +4,7 @@ date: 2020-09-15
 lang: en-us
 draft: false
 tags: ["machine learning"]
-katex: true
+math: true
 ---
 
 CatBoost が計算してくれる feature importance の定義がドキュメントを見てもよくわからなかったので調べた。

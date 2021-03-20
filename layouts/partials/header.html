@@ -20,6 +20,7 @@
 
 	{{- template "_internal/opengraph.html" . -}}
 	{{- template "_internal/twitter_cards.html" . -}}
+	<!--modify font at 2020/03/20-->
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" media="screen" href="{{ .Site.BaseURL }}css/normalize.css" />
@@ -49,4 +50,8 @@
 	{{- end }}
 	{{- end }}
 	{{- end }}
+	<!-- Render math-->
+	{{ if and (isset .Params "math") (eq .Params.math true)}}
+	{{ partial "mathjax_support.html" . }}
+	{{ end }}
 </head>

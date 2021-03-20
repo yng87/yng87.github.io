@@ -90,5 +90,8 @@ url = "https://twitter.com/yana_phys"
 [taxonomies]
    tag = "tags"
 
+# はてなブログカード埋め込みのため
 [markup]
-  defaultMarkdownHandler = "mmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

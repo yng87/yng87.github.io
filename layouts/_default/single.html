@@ -52,8 +52,4 @@
 	</div>
 	{{ partial "footer.html" . }}
 </body>
-<!-- Render math-->
-{{ if and (isset .Params "katex") (eq .Params.katex true)}}
-{{ partial "katex.html" . }}
-{{ end }}
 </html>
