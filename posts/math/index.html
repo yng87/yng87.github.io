@@ -6,7 +6,7 @@
 	<meta property="og:title" content="Hugo &#43; Math equation" />
 <meta property="og:description" content="アンダースコアがhtmlタグに変わる  Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://yng87.github.io/posts/katex/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://yng87.github.io/posts/math/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-03-20T10:41:06&#43;09:00" />
 <meta property="article:modified_time" content="2021-03-20T10:41:06&#43;09:00" />
 
@@ -106,9 +106,14 @@
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">	{{ if and (isset .Params &#34;math&#34;) (eq .Params.math true)}}
 	{{ partial &#34;mathjax_support.html&#34; . }}
 	{{ end }}
-</code></pre></div><p>これで <code>math: ture</code> と設定したコンテンツでのみ数式がレンダリングされる。
-上手くいけば先ほどの数式は以下のようになる。
+</code></pre></div><p>これで <code>math: ture</code> と設定したコンテンツでのみ数式がレンダリングされる。</p>
+<p>数式とマークダウンを共存させるために、数式はコードブロックとして記述するようにしている。
+つまり、以下のような式を書くと</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">`$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$`
+</code></pre></div><p>以下のようにレンダリングされる。
 <code>$$ p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})} $$</code></p>
+<hr>
+<p>以前 Academic テーマを使っていた時はこんなトリックを使わなくても上手くいっていた気がするので、もっとうまい方法があるかもしれない。</p>
 
 		</div>
 

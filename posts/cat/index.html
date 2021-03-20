@@ -117,7 +117,7 @@
 <p><img src="/img/tree_iris.png" alt=""></p>
 <p>まず、特徴量2の値で分岐をし、その後特徴量3の値で分岐をしている様子が確認できる。CatBoost は他のGBDTライブラリと異なり、(デフォルトでは) oblivious trees を作成する。そのため、同じ深さでは全てのノードが同じ条件で分岐を行う。</p>
 <p>ここで leaf に入っている <code>val</code> が何者か？ということだが、今解いているのは3クラスの分類であり、あるサンプルがクラス $j$ に属する確率はソフトマックス関数</p>
-<p>$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}$$</p>
+<p><code>$$ p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})} $$</code></p>
 <p>で表される。CatBoostClassifier が出力するのはこの $a_{j}$ である。</p>
 <p>このモデルの feature importance を見てみると</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">get_feature_importance</span>(<span style="color:#000">Pool</span>(<span style="color:#000">X</span>, <span style="color:#000">y</span>), <span style="color:#a90d91">type</span><span style="color:#000">=</span><span style="color:#c41a16">&#34;PredictionValuesChange&#34;</span>)
@@ -130,9 +130,9 @@
 <blockquote>
 <p>Leaf pairs that are compared have different split values in the node on the path to these leaves. If the split condition is met (this condition depends on the feature F), the object goes to the left subtree; otherwise it goes to the right one.</p>
 </blockquote>
-<p>$$importance_F=\sum_{tree, leafs_F} c_1(v_1 - avr)^2 + c_2(v_2 - avr)^2 \tag{1}$$</p>
+<p><code>$$ importance_F=\sum_{tree, leafs_F} c_1(v_1 - avr)^2 + c_2(v_2 - avr)^2 \tag{1} $$</code></p>
 <p>$c_1$, $c_2$ は比較している二つの leaf node それぞれの持つサンプル数（木を辿ってその leaf に属することになるデータの数）、$v_1$, $v_2$ はそこでの予測値の値 (val) である。$avr$ は以下のような $v_1$ と $v_2$ の加重平均である</p>
-<p>$$avr = \frac{c_1v_1 + c_2 v_2}{c_1 + c_2}.$$</p>
+<p><code>$$ avr = \frac{c_1v_1 + c_2 v_2}{c_1 + c_2}. $$</code></p>
 <p>つまり、PredictionValuesChange による feature importance はその特徴量を使って分岐した場合としなかった場合でどれくらい予測値が変わるかという指標になっている。</p>
 <p>比較に使う leaf pair はどのように選べば良いのだろうか？まず leaf 直上の分岐に使われる特徴量に関してはわかりやすい。同じ parent を持つ leaf 二つを使って $c_i$ と $v_i$ を計算すれば良い。</p>
 <p>では木のもっと上の方に現れる特徴量についてはどうすれば良いだろうか？一般の木では leaf 間のペアを定義することはできなさそうだが、CatBoost が生成する oblivious tree に限ってはうまく定義できる。
