@@ -43,7 +43,7 @@ model.plot_tree(tree_idx=0)
 
 ここで leaf に入っている `val` が何者か？ということだが、今解いているのは3クラスの分類であり、あるサンプルがクラス $j$ に属する確率はソフトマックス関数
 
-$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}$$
+`$$ p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})} $$`
 
 で表される。CatBoostClassifier が出力するのはこの $a_{j}$ である。
 
@@ -68,11 +68,11 @@ array([ 0.        ,  0.        , 44.49955092, 55.50044908])
 
 > Leaf pairs that are compared have different split values in the node on the path to these leaves. If the split condition is met (this condition depends on the feature F), the object goes to the left subtree; otherwise it goes to the right one.
 
-$$importance_F=\sum_{tree, leafs_F} c_1(v_1 - avr)^2 + c_2(v_2 - avr)^2 \tag{1}$$
+`$$ importance_F=\sum_{tree, leafs_F} c_1(v_1 - avr)^2 + c_2(v_2 - avr)^2 \tag{1} $$`
 
 $c_1$, $c_2$ は比較している二つの leaf node それぞれの持つサンプル数（木を辿ってその leaf に属することになるデータの数）、$v_1$, $v_2$ はそこでの予測値の値 (val) である。$avr$ は以下のような $v_1$ と $v_2$ の加重平均である
 
-$$avr = \frac{c_1v_1 + c_2 v_2}{c_1 + c_2}.$$
+`$$ avr = \frac{c_1v_1 + c_2 v_2}{c_1 + c_2}. $$`
 
 つまり、PredictionValuesChange による feature importance はその特徴量を使って分岐した場合としなかった場合でどれくらい予測値が変わるかという指標になっている。
 
