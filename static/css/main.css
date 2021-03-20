@@ -194,6 +194,10 @@ ul {
 pre code {
   display: inline-block;
 }
+
+code {
+    background-color: #FAFAFA;
+}
   
 
 .wrapper {
