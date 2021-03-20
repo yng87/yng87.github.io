@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>CatBoost の feature importance - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="CatBoost の feature importance" />
+<meta property="og:description" content="CatBoost が計算してくれる feature importance の定義がドキュメントを見てもよくわからなかったので調べた。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://keisukeyanagi.netlify.app/posts/cat/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-09-15T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2020-09-15T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CatBoost の feature importance"/>
+<meta name="twitter:description" content="CatBoost が計算してくれる feature importance の定義がドキュメントを見てもよくわからなかったので調べた。"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://keisukeyanagi.netlify.app/css/custom.css" />
+	
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://keisukeyanagi.netlify.app/js/main.js"></script>
+	<script src="https://keisukeyanagi.netlify.app/js/abc.js"></script>
+	<script src="https://keisukeyanagi.netlify.app/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://keisukeyanagi.netlify.app/">
+	<h1 class="site-title"><a href="https://keisukeyanagi.netlify.app/">Keisuke Yanagi</a></h1>
+	<div class="site-description"><h2></h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/yng87" title="Github"><i data-feather="github"></i></a><a href="https://twitter.com/yana_phys" title="Twitter"><i data-feather="twitter"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">CatBoost の feature importance</h1>
+			<div class="meta">Posted at &mdash; Sep 15, 2020</div>
+		</div>
+
+		<div class="markdown">
+			<p>CatBoost が計算してくれる feature importance の定義がドキュメントを見てもよくわからなかったので調べた。</p>
+<p>いくつか importance の定義があるが、ここでは <code>PredictionValuesChange</code> で定義されるものについてまとめる。これはその feature が最終的な予測値にどれだけ影響を持つかという指標である。</p>
+<h1 id="catboost-で-importance-を出してみる">CatBoost で importance を出してみる</h1>
+<hr>
+<p>まずはシンプルなモデルを作って実際に feature importance を出力してみる。ここでは iris dataset を使い以下のようなパラメーターでモデルを訓練する。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a90d91">from</span> <span style="color:#000">catboost</span> <span style="color:#a90d91">import</span> <span style="color:#000">CatBoostClassifier</span>, <span style="color:#000">Pool</span>
+<span style="color:#a90d91">from</span> <span style="color:#000">sklearn</span> <span style="color:#a90d91">import</span> <span style="color:#000">datasets</span>
+
+<span style="color:#000">iris</span> <span style="color:#000">=</span> <span style="color:#000">datasets</span><span style="color:#000">.</span><span style="color:#000">load_iris</span>()
+<span style="color:#000">X</span>, <span style="color:#000">y</span> <span style="color:#000">=</span> <span style="color:#000">iris</span><span style="color:#000">.</span><span style="color:#000">data</span>, <span style="color:#000">iris</span><span style="color:#000">.</span><span style="color:#000">target</span>
+
+<span style="color:#000">model</span> <span style="color:#000">=</span> <span style="color:#000">CatBoostClassifier</span>(<span style="color:#000">iterations</span><span style="color:#000">=</span><span style="color:#1c01ce">1</span>, <span style="color:#000">depth</span><span style="color:#000">=</span><span style="color:#1c01ce">2</span>, <span style="color:#000">random_seed</span><span style="color:#000">=</span><span style="color:#1c01ce">42</span>)
+
+<span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">fit</span>(<span style="color:#000">X</span>, <span style="color:#000">y</span>)
+</code></pre></div><p>あやめを3クラスに分ける分類問題を、深さが2の tree 一本で解いている。</p>
+<p>これを実行すると結果として以下のようなモデルが得られる</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">plot_tree</span>(<span style="color:#000">tree_idx</span><span style="color:#000">=</span><span style="color:#1c01ce">0</span>)
+</code></pre></div><!-- <figure>
+    <img src="tree_iris.png"/> 
+</figure>
+ -->
+<p><img src="/img/tree_iris.png" alt=""></p>
+<p>まず、特徴量2の値で分岐をし、その後特徴量3の値で分岐をしている様子が確認できる。CatBoost は他のGBDTライブラリと異なり、(デフォルトでは) oblivious trees を作成する。そのため、同じ深さでは全てのノードが同じ条件で分岐を行う。</p>
+<p>ここで leaf に入っている <code>val</code> が何者か？ということだが、今解いているのは3クラスの分類であり、あるサンプルがクラス $j$ に属する確率はソフトマックス関数</p>
+<p>$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}$$</p>
+<p>で表される。CatBoostClassifier が出力するのはこの $a_{j}$ である。</p>
+<p>このモデルの feature importance を見てみると</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">get_feature_importance</span>(<span style="color:#000">Pool</span>(<span style="color:#000">X</span>, <span style="color:#000">y</span>), <span style="color:#a90d91">type</span><span style="color:#000">=</span><span style="color:#c41a16">&#34;PredictionValuesChange&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        , 44.49955092, 55.50044908<span style="color:#000">])</span>
+</code></pre></div><p>となる。木の分岐に特徴量0と1が使われていないので、それらに関してはゼロになっている。これをみると特徴量3が特徴量2に比べて少しだけ重要であるらしい。
+この定義による importance は負にならないので、合計100になるよう normalize された値が出力されている。</p>
+<h1 id="catboost-は何を計算しているか">CatBoost は何を計算しているか？</h1>
+<hr>
+<p><a href="https://catboost.ai/docs/concepts/fstr.html#fstr__regular-feature-importance">公式ドキュメント</a>によると、feature F の feature importance は leaf の ペアに関してそれぞれの予測値とその加重平均を比較して計算されている</p>
+<blockquote>
+<p>Leaf pairs that are compared have different split values in the node on the path to these leaves. If the split condition is met (this condition depends on the feature F), the object goes to the left subtree; otherwise it goes to the right one.</p>
+</blockquote>
+<p>$$importance_F=\sum_{tree, leafs_F} c_1(v_1 - avr)^2 + c_2(v_2 - avr)^2 \tag{1}$$</p>
+<p>$c_1$, $c_2$ は比較している二つの leaf node それぞれの持つサンプル数（木を辿ってその leaf に属することになるデータの数）、$v_1$, $v_2$ はそこでの予測値の値 (val) である。$avr$ は以下のような $v_1$ と $v_2$ の加重平均である</p>
+<p>$$avr = \frac{c_1v_1 + c_2 v_2}{c_1 + c_2}.$$</p>
+<p>つまり、PredictionValuesChange による feature importance はその特徴量を使って分岐した場合としなかった場合でどれくらい予測値が変わるかという指標になっている。</p>
+<p>比較に使う leaf pair はどのように選べば良いのだろうか？まず leaf 直上の分岐に使われる特徴量に関してはわかりやすい。同じ parent を持つ leaf 二つを使って $c_i$ と $v_i$ を計算すれば良い。</p>
+<p>では木のもっと上の方に現れる特徴量についてはどうすれば良いだろうか？一般の木では leaf 間のペアを定義することはできなさそうだが、CatBoost が生成する oblivious tree に限ってはうまく定義できる。
+というのも、木の各深さで分岐の条件が同一ということは、結局CatBoostは単に分岐条件を一列に並べて Yes/No の判定を繰り返しているに過ぎない。なので、d 番目の分岐が異なり、その前後の分岐は全て同じような leaf node のペアを必ず作ることができる。そのようなペアを集めてきて上の (1) 式で深さ d 番目のfeature のimportance を計算することができそうだ。</p>
+<p>以上のことはドキュメントからだとわかりづらいが、<a href="https://github.com/catboost/catboost/blob/49e24bba3279ae1ac22146b8322e37d86e6049bf/catboost/libs/fstr/feature_str.h#L218-L256">ソースコードの該当箇所</a>を見ると多分そうだろうと想像できる。<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<h1 id="実際に計算して確かめてみる">実際に計算して確かめてみる</h1>
+<hr>
+<p>今の説明を実際に先ほど計算した iris の例で確かめてみる。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> leaf node を左から leaf0, leaf1, &hellip;, leaf3 と呼ぶことにする。まず leaf 直上の分岐に使われている feature 3 については、(leaf0, leaf1) と (leaf2, leaf3) に関してそれぞれ (1) 式を計算する</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#177500"># get border values for each feature</span>
+<span style="color:#000">borders</span> <span style="color:#000">=</span> <span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">get_borders</span>() 
+<span style="color:#177500"># {0: [], 1: [], 2: [4.949999809265137], 3: [0.44999998807907104]}</span>
+
+<span style="color:#177500"># get samples in each leaf node</span>
+<span style="color:#000">leaf_samples</span> <span style="color:#000">=</span> []
+<span style="color:#000">leaf_samples</span><span style="color:#000">.</span><span style="color:#000">append</span>(<span style="color:#000">X</span>[(<span style="color:#000">X</span>[:, <span style="color:#1c01ce">2</span>] <span style="color:#000">&lt;=</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">2</span>][<span style="color:#1c01ce">0</span>]) <span style="color:#000">&amp;</span> (<span style="color:#000">X</span>[:, <span style="color:#1c01ce">3</span>] <span style="color:#000">&lt;=</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">3</span>][<span style="color:#1c01ce">0</span>])])
+<span style="color:#000">leaf_samples</span><span style="color:#000">.</span><span style="color:#000">append</span>(<span style="color:#000">X</span>[(<span style="color:#000">X</span>[:, <span style="color:#1c01ce">2</span>] <span style="color:#000">&lt;=</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">2</span>][<span style="color:#1c01ce">0</span>]) <span style="color:#000">&amp;</span> (<span style="color:#000">X</span>[:, <span style="color:#1c01ce">3</span>] <span style="color:#000">&gt;</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">3</span>][<span style="color:#1c01ce">0</span>])])
+<span style="color:#000">leaf_samples</span><span style="color:#000">.</span><span style="color:#000">append</span>(<span style="color:#000">X</span>[(<span style="color:#000">X</span>[:, <span style="color:#1c01ce">2</span>] <span style="color:#000">&gt;</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">2</span>][<span style="color:#1c01ce">0</span>]) <span style="color:#000">&amp;</span> (<span style="color:#000">X</span>[:, <span style="color:#1c01ce">3</span>] <span style="color:#000">&lt;=</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">3</span>][<span style="color:#1c01ce">0</span>])])
+<span style="color:#000">leaf_samples</span><span style="color:#000">.</span><span style="color:#000">append</span>(<span style="color:#000">X</span>[(<span style="color:#000">X</span>[:, <span style="color:#1c01ce">2</span>] <span style="color:#000">&gt;</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">2</span>][<span style="color:#1c01ce">0</span>]) <span style="color:#000">&amp;</span> (<span style="color:#000">X</span>[:, <span style="color:#1c01ce">3</span>] <span style="color:#000">&gt;</span> <span style="color:#000">borders</span>[<span style="color:#1c01ce">3</span>][<span style="color:#1c01ce">0</span>])])
+
+[<span style="color:#000">s</span><span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>] <span style="color:#a90d91">for</span> <span style="color:#000">s</span> <span style="color:#000">in</span> <span style="color:#000">leaf_samples</span>] <span style="color:#177500"># [48, 56, 0, 46]</span>
+
+<span style="color:#177500"># get leaf values</span>
+<span style="color:#000">vals</span> <span style="color:#000">=</span> <span style="color:#000">model</span><span style="color:#000">.</span><span style="color:#000">get_leaf_values</span>()<span style="color:#000">.</span><span style="color:#000">reshape</span>(<span style="color:#1c01ce">4</span>, <span style="color:#1c01ce">3</span>)
+<span style="color:#177500">#</span>
+<span style="color:#177500"># array([[ 0.84210526, -0.42105263, -0.42105263],</span>
+<span style="color:#177500">#        [-0.38461538,  0.67692308, -0.29230769],</span>
+<span style="color:#177500">#        [ 0.        ,  0.        ,  0.        ],</span>
+<span style="color:#177500">#        [-0.41818182, -0.36363636,  0.78181818]])</span>
+
+<span style="color:#000">ftr_imp</span> <span style="color:#000">=</span> <span style="color:#000">np</span><span style="color:#000">.</span><span style="color:#000">zeros</span>(<span style="color:#1c01ce">4</span>)
+<span style="color:#000">feature_idx</span> <span style="color:#000">=</span> <span style="color:#1c01ce">3</span>
+
+<span style="color:#a90d91">for</span> <span style="color:#000">i1</span>, <span style="color:#000">i2</span> <span style="color:#000">in</span> [(<span style="color:#1c01ce">0</span>, <span style="color:#1c01ce">1</span>), (<span style="color:#1c01ce">2</span>, <span style="color:#1c01ce">3</span>)]:
+  <span style="color:#177500"># weight</span>
+  <span style="color:#000">c1</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i1</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c2</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i2</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c_sum</span> <span style="color:#000">=</span> <span style="color:#000">c1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span>
+
+  <span style="color:#177500"># compute values difference</span>
+  <span style="color:#a90d91">for</span> <span style="color:#000">j</span> <span style="color:#000">in</span> <span style="color:#a90d91">range</span>(<span style="color:#1c01ce">3</span>):
+    <span style="color:#000">v1</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i1</span>][<span style="color:#000">j</span>]
+    <span style="color:#000">v2</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i2</span>][<span style="color:#000">j</span>]
+
+    <span style="color:#000">avg_v</span> <span style="color:#000">=</span> (<span style="color:#000">c1</span><span style="color:#000">*</span><span style="color:#000">v1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span><span style="color:#000">v2</span>) <span style="color:#000">/</span> <span style="color:#000">c_sum</span>
+    <span style="color:#000">diff</span> <span style="color:#000">=</span> <span style="color:#000">c1</span><span style="color:#000">*</span>(<span style="color:#000">v1</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span><span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span>(<span style="color:#000">v2</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span>
+
+    <span style="color:#000">ftr_imp</span>[<span style="color:#000">feature_idx</span>] <span style="color:#000">+=</span> <span style="color:#000">diff</span>
+
+<span style="color:#000">ftr_imp</span>
+</code></pre></div><p>結果</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        ,  0.        , 70.48167229<span style="color:#000">])</span>
+</code></pre></div><p>次に、root node で使われている feature 2 について計算する。ここでペアを組むのは (leaf0, leaf2), (leaf1, leaf3) である。例えば、leaf0 と leaf2 は、faeture 3 に関する分岐は両方 No だが、root での feature 2 に関する分岐は異なる。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">feature_idx</span> <span style="color:#000">=</span> <span style="color:#1c01ce">2</span>
+
+<span style="color:#a90d91">for</span> <span style="color:#000">i1</span>, <span style="color:#000">i2</span> <span style="color:#000">in</span> [(<span style="color:#1c01ce">0</span>, <span style="color:#1c01ce">2</span>), (<span style="color:#1c01ce">1</span>, <span style="color:#1c01ce">3</span>)]:
+  <span style="color:#000">c1</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i1</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c2</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i2</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c_sum</span> <span style="color:#000">=</span> <span style="color:#000">c1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span>
+
+  <span style="color:#a90d91">for</span> <span style="color:#000">j</span> <span style="color:#000">in</span> <span style="color:#a90d91">range</span>(<span style="color:#1c01ce">3</span>):
+    <span style="color:#000">v1</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i1</span>][<span style="color:#000">j</span>]
+    <span style="color:#000">v2</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i2</span>][<span style="color:#000">j</span>]
+
+    <span style="color:#000">avg_v</span> <span style="color:#000">=</span> (<span style="color:#000">c1</span><span style="color:#000">*</span><span style="color:#000">v1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span><span style="color:#000">v2</span>) <span style="color:#000">/</span> <span style="color:#000">c_sum</span>
+    <span style="color:#000">diff</span> <span style="color:#000">=</span> <span style="color:#000">c1</span><span style="color:#000">*</span>(<span style="color:#000">v1</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span><span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span>(<span style="color:#000">v2</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span>
+
+    <span style="color:#000">ftr_imp</span>[<span style="color:#000">feature_idx</span>] <span style="color:#000">+=</span> <span style="color:#000">diff</span>
+
+<span style="color:#000">ftr_imp</span>
+</code></pre></div><p>結果は</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        , 56.51130428, 70.48167229<span style="color:#000">])</span>
+</code></pre></div><p>最後にこれを合計100%になるよう normalize すると</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        , 44.49955092, 55.50044908<span style="color:#000">])</span>
+</code></pre></div><p>となる。これはCatBoost の APIを使って求めた結果に一致している。より複雑な木になった時も同様に計算できるはずである。</p>
+<h1 id="non-oblivious-tree-の場合">Non-oblivious tree の場合</h1>
+<hr>
+<p>一般の対称ではない木の場合は上記の方法は使えない。CatBoost は oblivious の制限を付けずに学習することもできるが、その際の importance は</p>
+<ol>
+<li>leaf node の parent に対して (1) 式で feature F の importance を計算</li>
+<li>その leaf node を削除し、parent だった node を新たに leaf とする。それらのサンプル数は $c_1 + c_2$で、val は $avr$ で割り当てる</li>
+</ol>
+<p>ということを繰り返して計算される。この方法による importance は oblivious tree に対して計算された値とは一般に一致しない。
+<a href="https://github.com/catboost/catboost/blob/49e24bba3279ae1ac22146b8322e37d86e6049bf/catboost/libs/fstr/feature_str.h#L132-L216">詳しくはソースコードの該当箇所</a>を見るとわかる。</p>
+<p>上で使った iris のモデルで実際に計算してみよう。
+まずは leaf について</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">ftr_imp</span> <span style="color:#000">=</span> <span style="color:#000">np</span><span style="color:#000">.</span><span style="color:#000">zeros</span>(<span style="color:#1c01ce">4</span>)
+
+<span style="color:#000">parent_vals</span> <span style="color:#000">=</span> <span style="color:#000">np</span><span style="color:#000">.</span><span style="color:#000">zeros</span>((<span style="color:#1c01ce">2</span>, <span style="color:#1c01ce">3</span>))
+<span style="color:#000">parent_weight</span> <span style="color:#000">=</span> <span style="color:#000">np</span><span style="color:#000">.</span><span style="color:#000">zeros</span>(<span style="color:#1c01ce">2</span>)
+
+<span style="color:#a90d91">for</span> <span style="color:#000">i</span> <span style="color:#000">in</span> <span style="color:#a90d91">range</span>(<span style="color:#1c01ce">0</span>, <span style="color:#1c01ce">4</span>, <span style="color:#1c01ce">2</span>):
+  <span style="color:#000">c1</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c2</span> <span style="color:#000">=</span> <span style="color:#000">leaf_samples</span>[<span style="color:#000">i</span><span style="color:#000">+</span><span style="color:#1c01ce">1</span>]<span style="color:#000">.</span><span style="color:#000">shape</span>[<span style="color:#1c01ce">0</span>]
+  <span style="color:#000">c_sum</span> <span style="color:#000">=</span> <span style="color:#000">c1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span>
+
+  <span style="color:#000">parent_weight</span>[<span style="color:#000">i</span> <span style="color:#000">//</span> <span style="color:#1c01ce">2</span>] <span style="color:#000">=</span> <span style="color:#000">c_sum</span>
+
+  <span style="color:#a90d91">for</span> <span style="color:#000">j</span> <span style="color:#000">in</span> <span style="color:#a90d91">range</span>(<span style="color:#1c01ce">3</span>):
+    <span style="color:#000">v1</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i</span>][<span style="color:#000">j</span>]
+    <span style="color:#000">v2</span> <span style="color:#000">=</span> <span style="color:#000">vals</span>[<span style="color:#000">i</span><span style="color:#000">+</span><span style="color:#1c01ce">1</span>][<span style="color:#000">j</span>]
+
+    <span style="color:#000">avg_v</span> <span style="color:#000">=</span> (<span style="color:#000">c1</span><span style="color:#000">*</span><span style="color:#000">v1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span><span style="color:#000">v2</span>) <span style="color:#000">/</span> <span style="color:#000">c_sum</span>
+    <span style="color:#000">diff</span> <span style="color:#000">=</span> <span style="color:#000">c1</span><span style="color:#000">*</span>(<span style="color:#000">v1</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span><span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span>(<span style="color:#000">v2</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span>
+
+    <span style="color:#000">ftr_imp</span>[<span style="color:#1c01ce">3</span>] <span style="color:#000">+=</span> <span style="color:#000">diff</span>
+
+    <span style="color:#000">parent_vals</span>[<span style="color:#000">i</span> <span style="color:#000">//</span> <span style="color:#1c01ce">2</span>][<span style="color:#000">j</span>] <span style="color:#000">=</span> <span style="color:#000">avg_v</span>
+</code></pre></div><p>そして root について</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#000">c1</span> <span style="color:#000">=</span> <span style="color:#000">parent_weight</span>[<span style="color:#1c01ce">0</span>]
+<span style="color:#000">c2</span> <span style="color:#000">=</span> <span style="color:#000">parent_weight</span>[<span style="color:#1c01ce">1</span>]
+<span style="color:#000">c_sum</span> <span style="color:#000">=</span> <span style="color:#000">c1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span>
+
+<span style="color:#a90d91">for</span> <span style="color:#000">j</span> <span style="color:#000">in</span> <span style="color:#a90d91">range</span>(<span style="color:#1c01ce">3</span>):
+  <span style="color:#000">v1</span> <span style="color:#000">=</span> <span style="color:#000">parent_vals</span>[<span style="color:#1c01ce">0</span>][<span style="color:#000">j</span>]
+  <span style="color:#000">v2</span> <span style="color:#000">=</span> <span style="color:#000">parent_vals</span>[<span style="color:#1c01ce">1</span>][<span style="color:#000">j</span>]
+  <span style="color:#000">avg_v</span> <span style="color:#000">=</span> (<span style="color:#000">c1</span><span style="color:#000">*</span><span style="color:#000">v1</span> <span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span><span style="color:#000">v2</span>) <span style="color:#000">/</span> <span style="color:#000">c_sum</span>
+  <span style="color:#000">diff</span> <span style="color:#000">=</span> <span style="color:#000">c1</span><span style="color:#000">*</span>(<span style="color:#000">v1</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span> <span style="color:#000">+</span> <span style="color:#000">c2</span><span style="color:#000">*</span>(<span style="color:#000">v2</span> <span style="color:#000">-</span> <span style="color:#000">avg_v</span>)<span style="color:#000">**</span><span style="color:#1c01ce">2</span>
+
+  <span style="color:#000">ftr_imp</span>[<span style="color:#1c01ce">2</span>] <span style="color:#000">+=</span> <span style="color:#000">diff</span>
+
+<span style="color:#000">ftr_imp</span> <span style="color:#000">/</span> <span style="color:#a90d91">sum</span>(<span style="color:#000">ftr_imp</span>) <span style="color:#000">*</span> <span style="color:#1c01ce">100</span>
+</code></pre></div><p>結果は</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">array<span style="color:#000">([</span> 0.        ,  0.        , 46.61367922, 53.38632078<span style="color:#000">])</span>
+</code></pre></div><p>となり、確かに oblivious の時とは異なる値になる。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>部分的にソースを眺めただけなので勘違いしている可能性はあるが… <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>ノートブック: <a href="https://colab.research.google.com/drive/1CiRm_vby9S4c_q5dWq_oY88hSehC17_U?usp=sharing">https://colab.research.google.com/drive/1CiRm_vby9S4c_q5dWq_oY88hSehC17_U?usp=sharing</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/machine-learning">machine learning</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<script>feather.replace()</script>
+</body>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}]
+    });
+  });
+</script>
+
+</html>

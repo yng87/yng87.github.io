@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Keisuke Yanagi</title>
+    <link>https://keisukeyanagi.netlify.app/tags/</link>
+    <description>Recent content in Tags on Keisuke Yanagi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <copyright>© Copyright notice</copyright>
+    <lastBuildDate>Sat, 20 Mar 2021 08:12:54 +0900</lastBuildDate><atom:link href="https://keisukeyanagi.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hugo</title>
+      <link>https://keisukeyanagi.netlify.app/tags/hugo/</link>
+      <pubDate>Sat, 20 Mar 2021 08:12:54 +0900</pubDate>
+      
+      <guid>https://keisukeyanagi.netlify.app/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>https://keisukeyanagi.netlify.app/tags/machine-learning/</link>
+      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://keisukeyanagi.netlify.app/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
