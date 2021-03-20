@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Keisuke Yanagi</title>
-    <link>https://keisukeyanagi.netlify.app/tags/</link>
+    <link>https://yng87.github.io/tags/</link>
     <description>Recent content in Tags on Keisuke Yanagi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Sat, 20 Mar 2021 08:12:54 +0900</lastBuildDate><atom:link href="https://keisukeyanagi.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 08:12:54 +0900</lastBuildDate><atom:link href="https://yng87.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>hugo</title>
-      <link>https://keisukeyanagi.netlify.app/tags/hugo/</link>
+      <link>https://yng87.github.io/tags/hugo/</link>
       <pubDate>Sat, 20 Mar 2021 08:12:54 +0900</pubDate>
       
-      <guid>https://keisukeyanagi.netlify.app/tags/hugo/</guid>
+      <guid>https://yng87.github.io/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>machine learning</title>
-      <link>https://keisukeyanagi.netlify.app/tags/machine-learning/</link>
+      <link>https://yng87.github.io/tags/machine-learning/</link>
       <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://keisukeyanagi.netlify.app/tags/machine-learning/</guid>
+      <guid>https://yng87.github.io/tags/machine-learning/</guid>
       <description></description>
     </item>
     

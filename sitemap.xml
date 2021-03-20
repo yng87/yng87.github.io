@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://keisukeyanagi.netlify.app/posts/katex/</loc>
+    <loc>https://yng87.github.io/posts/katex/</loc>
     <lastmod>2021-03-20T10:41:06+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/</loc>
+    <loc>https://yng87.github.io/</loc>
     <lastmod>2021-03-20T10:41:06+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/posts/</loc>
+    <loc>https://yng87.github.io/posts/</loc>
     <lastmod>2021-03-20T10:41:06+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/tags/hugo/</loc>
+    <loc>https://yng87.github.io/tags/hugo/</loc>
     <lastmod>2021-03-20T08:12:54+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/posts/embed_contents/</loc>
+    <loc>https://yng87.github.io/posts/embed_contents/</loc>
     <lastmod>2021-03-20T08:12:54+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/tags/</loc>
+    <loc>https://yng87.github.io/tags/</loc>
     <lastmod>2021-03-20T08:12:54+09:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/about/</loc>
+    <loc>https://yng87.github.io/about/</loc>
     <lastmod>2021-03-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/posts/cat/</loc>
+    <loc>https://yng87.github.io/posts/cat/</loc>
     <lastmod>2020-09-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://keisukeyanagi.netlify.app/tags/machine-learning/</loc>
+    <loc>https://yng87.github.io/tags/machine-learning/</loc>
     <lastmod>2020-09-15T00:00:00+00:00</lastmod>
   </url>
 </urlset>
