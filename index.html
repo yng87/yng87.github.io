@@ -98,9 +98,8 @@
 					<a class="title" href="/posts/katex/">KaTeX</a> &mdash;
 					<span class="description">
 						
-						KaTeX が上手くいかない時がある。
-インライン (j)
-$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.&hellip;
+						Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
+アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.&hellip;
 						
 					</span>
 				</div>
@@ -159,5 +158,12 @@ if (!doNotTrack) {
 
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/auto-render.min.js" integrity="sha384-bHBqxz8fokvgoJ/sc17HODNxa42TlaEhB+w8ZJXTc2nZf1VgEaFZeZvT4Mznfz0v" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
-
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}]
+    });
+  });
+</script>
 </html>

@@ -4,9 +4,8 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>KaTeX - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="KaTeX" />
-<meta property="og:description" content="KaTeX が上手くいかない時がある。
-インライン (j)
-$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}." />
+<meta property="og:description" content="Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
+アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://keisukeyanagi.netlify.app/posts/katex/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-03-20T10:41:06&#43;09:00" />
@@ -14,9 +13,8 @@ $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}." />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="KaTeX"/>
-<meta name="twitter:description" content="KaTeX が上手くいかない時がある。
-インライン (j)
-$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}."/>
+<meta name="twitter:description" content="Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。
+アンダースコアがhtmlタグに変わる  $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}."/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" type="text/css" media="screen" href="https://keisukeyanagi.netlify.app/css/normalize.css" />
@@ -71,7 +69,13 @@ $$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}."/>
 		</div>
 
 		<div class="markdown">
-			<p>KaTeX が上手くいかない時がある。</p>
+			<p>Markdown に LaTeX 形式のテキストを埋め込んだときに発生する問題。</p>
+<h2 id="アンダースコアがhtmlタグに変わる">アンダースコアがhtmlタグに変わる</h2>
+<hr>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$
+</code></pre></div><p>↓</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">$$p(class = j) = \frac{\exp(a_{j})}{\sum&lt;<span style="color:#000">em</span>&gt;j \exp(a&lt;/<span style="color:#000">em</span>&gt;{j})}.$$
+</code></pre></div><p>KaTeX が上手くいかない時がある。</p>
 <p>インライン (j)</p>
 <p>$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}.$$</p>
 <p>$$p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}$$</p>
@@ -118,6 +122,13 @@ if (!doNotTrack) {
 
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/auto-render.min.js" integrity="sha384-bHBqxz8fokvgoJ/sc17HODNxa42TlaEhB+w8ZJXTc2nZf1VgEaFZeZvT4Mznfz0v" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
-
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}]
+    });
+  });
+</script>
 
 </html>
