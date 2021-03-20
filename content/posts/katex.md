@@ -33,6 +33,6 @@ $$p(class = j) = \frac{\exp(a_{j})}{\sum<em>j \exp(a</em>{j})}.$$
 
 これで `math: ture` と設定したコンテンツでのみ数式がレンダリングされる。
 上手くいけば先ほどの数式は以下のようになる。
-$$
+`$$
 p(class = j) = \frac{\exp(a_{j})}{\sum_j \exp(a_{j})}
-$$
+$$`
