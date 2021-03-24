@@ -117,7 +117,7 @@
 <p><a href="http://arxiv.org/abs/1611.04666">A Generic Coordinate Descent Framework for Learning from Implicit Feedback</a></p>
 <p>iALSで提案された Gramian Trick を Factorization Machine などに拡張しています。あまりちゃんと読んでません。扱っている問題は基本的には双線形のようなので、Coordinate descent で学習しています。</p>
 <hr>
-<p><a href="http://arxiv.org/abs/1905.11946">Efficient Training on Very Large Corpora via Gramian Estimation</a></p>
+<p><a href="http://arxiv.org/abs/1807.07187">Efficient Training on Very Large Corpora via Gramian Estimation</a></p>
 <p>iALS で提案された Gramian trick を、一般のニューラルネットワークモデルに拡張した論文です。ユーザーの embedding ベクトル $u$ とアイテムの embedding ベクトル $v$ の内積、 $u^Tv$ によってターゲットを近似するようなモデル（dot-product モデルと呼ばれています）であれば使えます。この手のモデルは two-tower モデルとも呼ばれ、最近は <a href="https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/45530.pdf">YouTube</a> や <a href="https://www.semanticscholar.org/paper/Lessons-Learned-Addressing-Dataset-Bias-in-at-Virani-Baxter/54a5595575455a03da92fb0fe5a6513a8a4a25f4">Twitter</a> などの有名企業の推薦モデルとしてよく使われている印象です。最近出た <a href="https://www.tensorflow.org/recommenders">TensorFlow Recommenders</a> でも利用が想定されています。
 一般の非線形なモデルでは iALS で提案された最適化手法が使えないのですが、そこを工夫してSGDで学習できるようにしたのがこの論文の貢献です。</p>
 <hr>
