@@ -100,6 +100,8 @@
 <p><a href="http://arxiv.org/abs/2101.08769">Item Recommendation from Implicit Feedback</a></p>
 <p>最近 arXiv に投稿されたレビュー論文です。Bayesian Personalized Ranking の考案者であるこの業界の第一人者、Steffen Rendle氏による解説です。Implicit feedback 下におけるアイテム推薦についてコンパクトにまとまっています。ウェブサイトで使う推薦モデルの構築では、ユーザーの行動ログからデータセットを作ることが多いのですが、その場合負例が集まりづらいという問題があります。ユーザーは興味のない対象にはそもそも関わらずログも残らないからです。このような状況下でモデルを訓練する際に行われる負例サンプリングについての解説や、サンプリングを回避するための手法である Gramian Trick についての解説が充実しています。</p>
 <p>以下に挙げる論文の多くはこのレビューの中で言及されています。</p>
+<p>またこの論文を読む際に、以下の記事を参考にさせて頂きました。</p>
+<p><a href="https://cyberagent.ai/blog/research/publication_review/14483/">&ldquo;Item Recommendation from Implicit Feedback&quot;の紹介 | AI tech studio</a></p>
 <hr>
 <p><a href="https://dl.acm.org/doi/10.1145/3109859.3109911">Folding: Why Good Models Sometimes Make Spurious Recommendations</a></p>
 <p>推薦の「悪さ」をどうやって測るかについての研究です。行列分解などの embedding を利用するモデルをユーザーのフィードバックだけで学習すると、本来埋め込み空間内で遠くにあるべきアイテムを近くに配置してしまうと指摘しています。実際に toy dataset でそのような現象を可視化しており、負例サンプリングの必要性がわかる論文になっています。</p>
