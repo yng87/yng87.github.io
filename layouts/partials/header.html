@@ -54,4 +54,8 @@
 	{{ if and (isset .Params "math") (eq .Params.math true)}}
 	{{ partial "mathjax_support.html" . }}
 	{{ end }}
+	<!-- Google Analytics-->
+	{{ if not .Site.IsServer }}
+  	{{ partial "google/analytics" . }}
+	{{ end }}
 </head>

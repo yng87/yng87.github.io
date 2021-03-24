@@ -12,7 +12,8 @@ pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
 # Your Google analytics code.
-googleAnalytics = "G-GBXRKMXMRK"
+# To set up, see https://helve-blog.com/posts/web-technology/hugo-google-analytics-tag/
+googleAnalytics = ""
 # Your Disqus sortname.
 # disqusShortname = "localhost"
 
