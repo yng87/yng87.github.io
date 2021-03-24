@@ -15,6 +15,10 @@ tags: ["machine learning", "recommendation", "paper"]
 
 以下に挙げる論文の多くはこのレビューの中で言及されています。
 
+またこの論文を読む際に、以下の記事を参考にさせて頂きました。
+
+["Item Recommendation from Implicit Feedback"の紹介 | AI tech studio](https://cyberagent.ai/blog/research/publication_review/14483/)
+
 ---
 [Folding: Why Good Models Sometimes Make Spurious Recommendations](https://dl.acm.org/doi/10.1145/3109859.3109911)
 
