@@ -1,7 +1,7 @@
 ---
 title: "Implicit feedback 下での推薦アルゴリズムに関わる論文"
 date: 2021-03-21
-draft: true
+draft: false
 math: true
 tags: ["machine learning", "recommendation", "paper"]
 ---
@@ -47,7 +47,7 @@ iALSで提案された Gramian Trick を Factorization Machine などに拡張�
 ---
 [Efficient Training on Very Large Corpora via Gramian Estimation](http://arxiv.org/abs/1905.11946)
 
-iALS で提案された Gram 行列による負例サンプリングの代替手法を、一般のニューラルネットワークモデルに拡張した論文です。ユーザーの embedding ベクトル $u$ とアイテムの embedding ベクトル $v$ の内積、 $u^Tv$ によってターゲットを近似するようなモデル（dot-product モデルと呼ばれています）であれば使えます。この手のモデルは two-tower モデルとも呼ばれ、最近は [YouTube](https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/45530.pdf) や [Twitter](https://www.semanticscholar.org/paper/Lessons-Learned-Addressing-Dataset-Bias-in-at-Virani-Baxter/54a5595575455a03da92fb0fe5a6513a8a4a25f4) などの有名企業の推薦モデルとしてよく使われている印象です。最近出た [TensorFlow Recommenders](https://www.tensorflow.org/recommenders)にも導入されています。
+iALS で提案された Gram 行列による負例サンプリングの代替手法を、一般のニューラルネットワークモデルに拡張した論文です。ユーザーの embedding ベクトル $u$ とアイテムの embedding ベクトル $v$ の内積、 $u^Tv$ によってターゲットを近似するようなモデル（dot-product モデルと呼ばれています）であれば使えます。この手のモデルは two-tower モデルとも呼ばれ、最近は [YouTube](https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/45530.pdf) や [Twitter](https://www.semanticscholar.org/paper/Lessons-Learned-Addressing-Dataset-Bias-in-at-Virani-Baxter/54a5595575455a03da92fb0fe5a6513a8a4a25f4) などの有名企業の推薦モデルとしてよく使われている印象です。最近出た [TensorFlow Recommenders](https://www.tensorflow.org/recommenders) にも導入されています。
  一般の非線形なモデルでは iALS で提案された最適化手法が使えないのですが、そこを工夫してSGDで学習できるようにしたのがこの論文の貢献です。
 
 ---
