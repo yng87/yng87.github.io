@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Implicit feedback 下での推薦アルゴリズムに関わる論文 - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Implicit feedback 下での推薦アルゴリズムに関わる論文" />
+<meta property="og:description" content="最近は推薦の問題に取り組むことが多く、特に実務の現場では implicit feedback という状況を扱う必要があるため関連する論文を読んで勉強していました。重要そうな論文をいくつかリストアップしたいと思います。
+ Item Recommendation from Implicit Feedback" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yng87.github.io/posts/implicit_feedback/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-03-21T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-03-21T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Implicit feedback 下での推薦アルゴリズムに関わる論文"/>
+<meta name="twitter:description" content="最近は推薦の問題に取り組むことが多く、特に実務の現場では implicit feedback という状況を扱う必要があるため関連する論文を読んで勉強していました。重要そうな論文をいくつかリストアップしたいと思います。
+ Item Recommendation from Implicit Feedback"/>
+
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://yng87.github.io/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://yng87.github.io/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://yng87.github.io/css/custom.css" />
+	
+
+	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+	<script src="https://yng87.github.io/js/main.js"></script>
+	<script src="https://yng87.github.io/js/abc.js"></script>
+	<script src="https://yng87.github.io/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	
+	<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  
+    window.addEventListener('load', (event) => {
+        document.querySelectorAll("mjx-container").forEach(function(x){
+          x.parentElement.classList += 'has-jax'})
+      });
+  
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://yng87.github.io/">
+	<h1 class="site-title"><a href="https://yng87.github.io/">Keisuke Yanagi</a></h1>
+	<div class="site-description"><h2></h2><nav class="nav social">
+			<ul class="flat"><a href="https://github.com/yng87" title="Github"><i data-feather="github"></i></a><a href="https://twitter.com/yana_phys" title="Twitter"><i data-feather="twitter"></i></a></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Implicit feedback 下での推薦アルゴリズムに関わる論文</h1>
+			<div class="meta">Posted at &mdash; Mar 21, 2021</div>
+		</div>
+
+		<div class="markdown">
+			<p>最近は推薦の問題に取り組むことが多く、特に実務の現場では implicit feedback という状況を扱う必要があるため関連する論文を読んで勉強していました。重要そうな論文をいくつかリストアップしたいと思います。</p>
+<hr>
+<p><a href="http://arxiv.org/abs/2101.08769http://arxiv.org/abs/2101.08769">Item Recommendation from Implicit Feedback</a></p>
+<p>最近 arXiv に投稿されたレビュー論文です。Bayesian Personalized Ranking の考案者であるこの業界の第一人者、Steffen Rendle氏による解説です。Implicit feedback 下におけるアイテム推薦についてコンパクトにまとまっています。ウェブサイトで使う推薦モデルの構築では、ユーザーの行動ログからデータセットを作ることが多いのですが、その場合負例が集まりづらいという問題があります。ユーザーは興味のない対象にはそもそも関わらずログも残らないからです。このような状況下でモデルを訓練する際に行われる負例サンプリングについての解説や、サンプリングを回避するための手法である Gramian Trick についての解説が充実しています。</p>
+<p>以下に挙げる論文の多くはこのレビューの中で言及されています。</p>
+<hr>
+<p><a href="https://dl.acm.org/doi/10.1145/3109859.3109911">Folding: Why Good Models Sometimes Make Spurious Recommendations</a></p>
+<p>推薦の「悪さ」をどうやって測るかについての研究です。行列分解などの embedding を利用するモデルをユーザーのフィードバックだけで学習すると、本来埋め込み空間内で遠くにあるべきアイテムを遠くに配置できなくなると指摘しています。実際に toy dataset でそのような現象を可視化しており、負例サンプリングの必要性がわかる論文になっています。</p>
+<hr>
+<p><a href="http://ieeexplore.ieee.org/document/4781121/">Collaborative Filtering for Implicit Feedback Datasets</a></p>
+<p>行列分解を implicit feedback に拡張した論文です。ユーザーが反応しなかったアイテムを負例として加えること、それらに適当な重みを設けること、負例サンプリングを回避するために Gram 行列を上手く利用すること（Gramian trick）を提案しています。Alternating least squares という手法で最適化をしているため、iALS と呼ばれたりしています。</p>
+<hr>
+<p><a href="http://glaros.dtc.umn.edu/gkhome/node/774">SLIM: Sparse Linear Methods for Top-N Recommender Systems</a></p>
+<p>行列分解の特殊な場合として、$A=U^TW$ でユーザーの embedding 行列 $U$ を $A$ そのものに設定することを提案している論文です。パラメータは $W$ のみになるのでモデルとしては線形になります。$W$ がスパースになるよう $\ell_1$ 正則化を行います。一般にユーザーの行動履歴 $A$ もスパースなので、これで高速に推論を行うことができます。なお、実際には $\ell_2$ 正則化も課して $\ell_1$ とのバランスをとるので、いわゆる Elastic net になっています。</p>
+<p>SLIMは <a href="http://arxiv.org/abs/1907.06902">RecSys 2020 のベストペーパー</a>で neural collaborative filtering を打ち破ることのできるベースラインモデルとしても紹介されていました。</p>
+<p>Elastic net の最適化手法として例えば以下の論文が勉強になります。</p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2929880/">Regularization Paths for Generalized Linear Models via Coordinate Descent</a></p>
+<p>$\ell_1$ 正則化がスパース性をもたらすことがよくわかります。</p>
+<hr>
+<p><a href="http://arxiv.org/abs/1611.04666">A Generic Coordinate Descent Framework for Learning from Implicit Feedback</a></p>
+<p>iALSで提案された Gramian Trick を Factorization Machine などに拡張しています。あまりちゃんと読んでません。扱っている問題は基本的には双線形のようなので、Coordinate descent で学習しています。</p>
+<hr>
+<p><a href="http://arxiv.org/abs/1905.11946">Efficient Training on Very Large Corpora via Gramian Estimation</a></p>
+<p>iALS で提案された Gram 行列による負例サンプリングの代替手法を、一般のニューラルネットワークモデルに拡張した論文です。ユーザーの embedding ベクトル $u$ とアイテムの embedding ベクトル $v$ の内積、 $u^Tv$ によってターゲットを近似するようなモデル（dot-product モデルと呼ばれています）であれば使えます。この手のモデルは two-tower モデルとも呼ばれ、最近は <a href="https://static.googleusercontent.com/media/research.google.com/ja//pubs/archive/45530.pdf">YouTube</a> や <a href="https://www.semanticscholar.org/paper/Lessons-Learned-Addressing-Dataset-Bias-in-at-Virani-Baxter/54a5595575455a03da92fb0fe5a6513a8a4a25f4">Twitter</a> などの有名企業の推薦モデルとしてよく使われている印象です。最近出た <a href="https://www.tensorflow.org/recommenders">TensorFlow Recommenders</a> にも導入されています。
+一般の非線形なモデルでは iALS で提案された最適化手法が使えないのですが、そこを工夫してSGDで学習できるようにしたのがこの論文の貢献です。</p>
+<hr>
+<p>最初のレビューで挙げられている BPR 系の pair-wise objective モデルだったり、softmax で直接分布の密度推定をするという手法ももう少し詳しく知っておきたいです。</p>
+
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/machine-learning">machine learning</a></li>
+								
+								<li><a href="/tags/recommendation">recommendation</a></li>
+								
+								<li><a href="/tags/paper">paper</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> © Copyright notice |  <a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-123-45', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<script>feather.replace()</script>
+</body>
+</html>

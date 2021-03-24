@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <copyright>© Copyright notice</copyright>
-    <lastBuildDate>Sat, 20 Mar 2021 10:41:06 +0900</lastBuildDate><atom:link href="https://yng87.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://yng87.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
       <link>https://yng87.github.io/about/</link>
@@ -15,6 +15,16 @@
       
       <guid>https://yng87.github.io/about/</guid>
       <description>I work at ZOZO Technologies, Inc.</description>
+    </item>
+    
+    <item>
+      <title>Implicit feedback 下での推薦アルゴリズムに関わる論文</title>
+      <link>https://yng87.github.io/posts/implicit_feedback/</link>
+      <pubDate>Sun, 21 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://yng87.github.io/posts/implicit_feedback/</guid>
+      <description>最近は推薦の問題に取り組むことが多く、特に実務の現場では implicit feedback という状況を扱う必要があるため関連する論文を読んで勉強していました。重要そうな論文をいくつかリストアップしたいと思います。
+ Item Recommendation from Implicit Feedback</description>
     </item>
     
     <item>
