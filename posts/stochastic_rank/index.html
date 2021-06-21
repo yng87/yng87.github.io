@@ -207,7 +207,7 @@ $L^{soft}$ の式と比べると、exponential smoothing の中心が worst 方�
 <p><a href="https://arxiv.org/abs/2001.07248">SGLB: Stochastic Gradient Langevin Boosting</a></p>
 <h2 id="実験結果">実験結果</h2>
 <p><img src="/img/stochastic-rank-table.png" alt="">
-下二つが提案手法の結果である。$\mathrm{SR-}\mathcal{R_1}$ がこれまで説明してきた StochasticRank。下から二番目の$\mathrm{SR-}\mathcal{R_1}^{soft}$ はその variant で、worst permutation ではなく、平均で定義した nDCG を最適化した結果である。
+上図は [Ustimenko &amp; Prokhorenkova 2020] から引用した図で、下二つが提案手法の結果である。$\mathrm{SR-}\mathcal{R_1}$ がこれまで説明してきた StochasticRank。下から二番目の$\mathrm{SR-}\mathcal{R_1}^{soft}$ はその variant で、worst permutation ではなく、平均で定義した nDCG を最適化した結果である。
 提案手法が最も良く、また既存の LambdaMart もかなり良いことがわかる。</p>
 <h1 id="まとめ">まとめ</h1>
 <p>色々と説明してきたが、StochasitcRank は CatBoost の設定一つで簡単に使えるので上記事項を理解している必要はない。
