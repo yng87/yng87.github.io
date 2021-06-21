@@ -16,7 +16,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>CatBoost でランキング学習に使われる StochasticRank について - Keisuke Yanagi</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="CatBoost でランキング学習に使われる StochasticRank について" />
-<meta property="og:description" content="概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMart などは実装されていないようである。" />
+<meta property="og:description" content="概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMART などは実装されていないようである。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://yng87.github.io/posts/stochastic_rank/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-06-20T15:00:00&#43;09:00" />
@@ -24,7 +24,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CatBoost でランキング学習に使われる StochasticRank について"/>
-<meta name="twitter:description" content="概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMart などは実装されていないようである。"/>
+<meta name="twitter:description" content="概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMART などは実装されていないようである。"/>
 
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Ubuntu:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
@@ -107,7 +107,7 @@
 		<div class="markdown">
 			<h1 id="概要">概要</h1>
 <p>CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。
-これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMart などは実装されていないようである。</p>
+これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMART などは実装されていないようである。</p>
 <p>このStochasticRankについて調べようと思いドキュメントに載っていた論文を読んだのだが、書き方がなかなか数学的で読みづらかったので、自分なりの理解をまとめておこうと思う。</p>
 <p>簡単に要約すると</p>
 <ul>
@@ -147,7 +147,7 @@
 このために、単純に目的関数の微分を取って gradient descent するという手段が使えない。</p>
 <p>以下ではこの問題にアプローチする代表的な方法を二つ紹介する。</p>
 <h2 id="代理の目的関数を最適化する">代理の目的関数を最適化する</h2>
-<p>例えば LambdaRank・LambdaMart のような手法がこれである。この手法は目的関数を直接定義せず、その微分だけを定義して計算する。
+<p>例えば LambdaRank・LambdaMART のような手法がこれである。この手法は目的関数を直接定義せず、その微分だけを定義して計算する。
 これで本当に最適化したいランキングメトリックを最適化できるかはわからないが、 empirical にはとてもうまくいくようである。
 詳細は例えば以下の文献を参照。</p>
 <p><a href="https://www.microsoft.com/en-us/research/uploads/prod/2016/02/MSR-TR-2010-82.pdf">From RankNet to LambdaRank to LambdaMART: An Overview</a></p>
@@ -208,10 +208,12 @@ $L^{soft}$ の式と比べると、exponential smoothing の中心が worst 方�
 <h2 id="実験結果">実験結果</h2>
 <p><img src="/img/stochastic-rank-table.png" alt="">
 上図は [Ustimenko &amp; Prokhorenkova 2020] から引用した図で、下二つが提案手法の結果である。$\mathrm{SR-}\mathcal{R_1}$ がこれまで説明してきた StochasticRank。下から二番目の$\mathrm{SR-}\mathcal{R_1}^{soft}$ はその variant で、worst permutation ではなく、平均で定義した nDCG を最適化した結果である。
-提案手法が最も良く、また既存の LambdaMart もかなり良いことがわかる。</p>
+提案手法が最も良く、また既存の LambdaMART もかなり良いことがわかる。</p>
 <h1 id="まとめ">まとめ</h1>
-<p>色々と説明してきたが、StochasitcRank は CatBoost の設定一つで簡単に使えるので上記事項を理解している必要はない。
-だが、裏側でやってることがなんとなくイメージできると個人的には嬉しい。まだ理解できていないことが色々あり、特に tree 系以外のモデルにも使えるのかという点は気になっている。機会があったらちゃんと調べたい。</p>
+<p>StochasticRank を使えば好きなランキングメトリックをグローバルに最適化でき、とても強力なように思われる。
+色々と説明してきたが、StochasitcRank は CatBoost の設定一つで簡単に使えるので上記事項を理解している必要はない。
+だが、裏側でやってることがなんとなくイメージできると個人的には嬉しい。
+まだ理解できていないことが色々あり、特に tree 系以外のモデルにも使えるのかという点は気になっている。機会があったらちゃんと調べたい。</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

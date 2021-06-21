@@ -14,7 +14,7 @@
       <pubDate>Sun, 20 Jun 2021 15:00:00 +0900</pubDate>
       
       <guid>https://yng87.github.io/posts/stochastic_rank/</guid>
-      <description>概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMart などは実装されていないようである。</description>
+      <description>概要 CatBoost ではランキング学習用の目的関数 として StochasticRank という関数が実装されている。 これによってnDCGなどの定番のランキングメトリックを最適化することができる。逆に、XGBoostにある LambdaMART などは実装されていないようである。</description>
     </item>
     
     <item>
