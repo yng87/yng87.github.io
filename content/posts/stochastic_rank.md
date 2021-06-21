@@ -202,7 +202,7 @@ $L^{soft}$ の式と比べると、exponential smoothing の中心が worst 方�
 ## 実験結果
 
 ![](/img/stochastic-rank-table.png)
-下二つが提案手法の結果である。$\mathrm{SR-}\mathcal{R_1}$ がこれまで説明してきた StochasticRank。下から二番目の$\mathrm{SR-}\mathcal{R_1}^{soft}$ はその variant で、worst permutation ではなく、平均で定義した nDCG を最適化した結果である。
+上図は [Ustimenko & Prokhorenkova 2020] から引用した図で、下二つが提案手法の結果である。$\mathrm{SR-}\mathcal{R_1}$ がこれまで説明してきた StochasticRank。下から二番目の$\mathrm{SR-}\mathcal{R_1}^{soft}$ はその variant で、worst permutation ではなく、平均で定義した nDCG を最適化した結果である。
 提案手法が最も良く、また既存の LambdaMart もかなり良いことがわかる。
 
 # まとめ
