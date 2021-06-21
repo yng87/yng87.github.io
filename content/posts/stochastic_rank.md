@@ -17,7 +17,7 @@ CatBoost ではランキング学習用の目的関数 として StochasticRank 
 * ランキングメトリックにはモデルスコアがタイになる場合の扱いに関する曖昧さがあるが、既存手法はそれに無頓着であったことを指摘
 * タイの扱いに対して consistent な smoothing を提案。既存手法より良いことを実験で確認
 
-となっている。なお、以下は僕個人の理解であってきっと色々間違っている部分があるので、正確な内容は原論文に当たって欲しい。
+となっている。なお、以下は僕個人の理解であってきっと色々間違っている部分があるので、正確な内容は原論文を当たって欲しい。
 
 ## 資料
 
@@ -194,7 +194,7 @@ $z_1=z_2$ の場合は $\mu\to\infty$ で $r_1$ と $r_2$ の大小関係に応�
 $L^{soft}$ の式と比べると、exponential smoothing の中心が worst 方向にずれていることがわかる。特に、$z_1=z_2$ 付近では、$L^{soft}$ に比べて additional な factor $\exp(-\mu^2/4) $ がついている。
 
 ## 最適化
-[Ustimenko & Prokhorenkova 2020] は、以上の目的関数を CatBoost に組み込んでいる。彼らはさらなる工夫として、この目的関数を global に最適化するような手法を採用している。具体的には、(これも彼らが開発した) Stochastic Gradient Langevin Boosting という手法を使っている
+[Ustimenko & Prokhorenkova 2020] は、以上の目的関数を CatBoost に組み込んでいる。ランキングメトリックは $z$ に関して凸でないので最適化は簡単ではないが、彼らはさらなる工夫として、この目的関数を global に最適化するような手法を採用している。具体的には、(これも彼らが開発した) Stochastic Gradient Langevin Boosting という手法を使っている
 
 [SGLB: Stochastic Gradient Langevin Boosting](https://arxiv.org/abs/2001.07248)
 
