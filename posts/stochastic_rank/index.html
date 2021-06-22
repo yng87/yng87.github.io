@@ -141,7 +141,7 @@
 <p>メトリックはこれ以外にも色々ある。共通した性質として、スコア $z_i$ の値ではなく相対的な大小関係で評価値が決まるようになっている。</p>
 <hr>
 <h1 id="ランキングメトリックの最適化">ランキングメトリックの最適化</h1>
-<p>単純な回帰や分類の目的関数 (Mean squared error や logistic loss など) に比べて、ランキング学習のメトリックを目的関数とした最適化は難しい。
+<p>単純な回帰や分類の目的関数 (Mean squared error や logistic loss など) に比べて、ランキング学習のメトリックを目的関数とした最適化は難しい。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>
 スコア $z$ を変化させて行った時にランキングメトリックが変化するのは、ある二つのアイテム $i$ と $j$ で $z_i$ と $z_j$ の大小関係が変わる場合だけである。
 そのため、ランキングメトリックは model prediction $z$ に対して piecewise-constant、つまり、大体の領域でフラットで、時々不連続に変化するような関数になっている。
 このために、単純に目的関数の微分を取って gradient descent するという手段が使えない。</p>
@@ -163,7 +163,7 @@
 もともとの階段関数的な振る舞い（青波線）が滑らかになっている。</p>
 <p>この関数の微分を調べるために、式で書いてみると
 <code>\begin{align} L^{soft} &amp;= \mathrm{MRR}(z_1 &gt; z_2) \int_{-\infty}^{\infty} d\epsilon_1 \int_{-\infty}^{\epsilon_1 + (z_1-z_2)/\sigma}d\epsilon_2 \mathcal{N}(\epsilon_1|0, 1)\mathcal{N}(\epsilon_2|0, 1) \\ &amp;+ \mathrm{MRR}(z_1 &lt; z_2)\int_{-\infty}^{\infty} d\epsilon_1 \int_{\epsilon_1 + (z_1-z_2)/\sigma}^\infty d\epsilon_2 \mathcal{N}(\epsilon_1|0, 1)\mathcal{N}(\epsilon_2|0, 1)\,. \end{align}</code>
-となる。$\sigma\to0$ で $z_1$ と $z_2$ の大小関係に応じて積分の片方が落ちるので、たしかに元々のMRRに収束する。この微分は簡単に計算できて<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>
+となる。$\sigma\to0$ で $z_1$ と $z_2$ の大小関係に応じて積分の片方が落ちるので、たしかに元々のMRRに収束する。この微分は簡単に計算できて<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>
 <code>$$ \frac{\partial L^{soft}}{\partial z_1}=-\frac{\partial L^{soft}}{\partial z_2} =\left(\mathrm{MRR}(z_1 &gt; z_2) - \mathrm{MRR}(z_1 &lt; z_2)\right)\frac{1}{2\sqrt{\pi}\sigma}\exp\left(-\frac{(z_1-z_2)^2}{4\sigma^2}\right)\,. $$</code>
 このように $\sigma$ を小さいまま有限に保っておくことで、$z_1=z_2$ 付近を滑らかにすることができ、そこでの微分を使って最適化をすることができる。
 微分はメトリックの差に比例するようになるので、確かに元々のランキングメトリックを最適化する方向を選び取ることができる。</p>
@@ -190,7 +190,7 @@
 となると、これを使って worst permutation で定義されたメトリックを最適化することはできない。
 平均を取るのが良いのか、worst permutation を取るのが良いのかを簡単に決めることはできないと思うが、[Ustimenko &amp; Prokhorenkova 2020]では、worst permutation の方がタイを解消する方向に学習をブーストしやすいので良いのではないかと述べられている。</p>
 <h2 id="stochasticrank-objective">StochasticRank objective</h2>
-<p>StochasticRank は worst permutation でもノイズを使った smoothing が行えるように SoftRank 系の手法を拡張したものである。<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>式で書くと</p>
+<p>StochasticRank は worst permutation でもノイズを使った smoothing が行えるように SoftRank 系の手法を拡張したものである。<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>式で書くと</p>
 <p><code>$$ L^{stochastic}(z, r)\equiv\lim_{\mu\to\infty}\lim_{\sigma\to 0} \mathbb{E}_{\epsilon \sim \mathcal{N}(-\mu r, \mathbb{1})}L(z + \sigma\epsilon, r)\,. $$</code>
 ここで $r=(r_1, r_2,&hellip;)$ はリストの $i$ 番目のアイテムの relevance である。SoftRank との違いは、ガウシアンノイズの平均を $0$ ではなく、$-\mu r$ に取っているところ。これはモデルスコア $z$ を最も悪化させる方向になっている。そのため、このノイズで worst permutation に対応する smoothing になる。
 感覚を掴むため、もう一度上の $n=2$ の例を使って図示してみると
@@ -221,10 +221,13 @@ $L^{soft}$ の式と比べると、exponential smoothing の中心が worst 方�
 <p>分母の$2^4$は [Ustimenko &amp; Prokhorenkova 2020]に倣ってつけたが特に深い意味はないように思われる。また、小さい方が良いという convention を取るため、先頭にマイナスをつけている。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2" role="doc-endnote">
-<p>係数があっているかは自信がない。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>学習の目的関数としては nDCG などを直接使わず、logloss などのアイテム単独に対するものを使っても良い。これはいわゆる pointwise 学習と呼ばれる。ここで紹介するのは listwise や groupwise と呼ばれる目的関数である。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3" role="doc-endnote">
-<p>[Ustimenko &amp; Prokhorenkova 2020] では適用するランキングメトリックのクラスにきちんと数学的な定義を与え、smoothing に対しても元々のランキングメトリックに対する consistency という観点から定義を与えている。正しく知りたい方は原論文を読んで欲しい。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>係数があっているかは自信がない。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>[Ustimenko &amp; Prokhorenkova 2020] では適用するランキングメトリックのクラスにきちんと数学的な定義を与え、smoothing に対しても元々のランキングメトリックに対する consistency という観点から定義を与えている。正しく知りたい方は原論文を読んで欲しい。 <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
